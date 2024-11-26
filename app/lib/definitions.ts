@@ -60,6 +60,13 @@ export type Trainee = {
   ehealth_applied:string;
 }
 
+
+export type Brand = {
+  documentId: string;
+  name: string;
+  brand_status: boolean;
+}
+
 export type Revenue = {
   month: string;
   revenue: number;

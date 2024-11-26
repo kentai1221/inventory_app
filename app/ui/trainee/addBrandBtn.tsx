@@ -7,7 +7,7 @@ import { useActionState } from 'react';
 import { useSession } from "next-auth/react"
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 
-export function CreateTraineeBtn() {
+export function CreateBrandBtn() {
   const { status, data: session } = useSession()
   const { } = session || {};
 
@@ -15,7 +15,7 @@ export function CreateTraineeBtn() {
         img: false,
       });
     const [openModal, setOpenModal] = useState(false);
-    const i18n = useTranslations('trainee');
+    const i18n = useTranslations('brand');
     const initialState: FormState = { message: null };
     const [state, formAction, isPending] = useActionState(createTrainee, initialState);
     const locale = useLocale();

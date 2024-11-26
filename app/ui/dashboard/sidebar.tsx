@@ -9,19 +9,11 @@ import { useEffect, useState } from "react";
 import {
   HiAdjustments,
   HiChartPie,
-  HiClipboardList,
   HiCog,
-  HiCollection,
-  HiDocumentReport,
-  HiInboxIn,
-  HiLockClosed,
-  HiSearch,
-  HiShoppingBag,
-  HiSupport,
-  HiUsers,
+  HiOfficeBuilding,
+  HiShoppingCart,
   HiViewGrid,
-  HiOutlineTable,
-  HiOutlinePencilAlt
+  HiCurrencyDollar,
 } from "react-icons/hi";
 import { twMerge } from "tailwind-merge";
 import Cookies from 'js-cookie';
@@ -86,63 +78,11 @@ function DesktopSidebar() {
   const i18n = useTranslations('sidebar');
   const pages: SidebarItem[] = [
     { href: "/", icon: HiChartPie, label: i18n('dashboard') },
-    { href: "/trainee", icon: HiUsers, label:i18n('trainee') },
-    // { href: "/mailing/inbox", icon: HiInboxIn, label: "Inbox", badge: "3" },
-    // {
-    //   icon: HiShoppingBag,
-    //   label: "E-commerce",
-    //   items: [
-    //     { href: "/e-commerce/products", label: "Products" },
-    //     { href: "/e-commerce/billing", label: "Billing" },
-    //     { href: "/e-commerce/invoice", label: "Invoice" },
-    //   ],
-    // },
-    // {
-    //   icon: HiUsers,
-    //   label: "Users",
-    //   items: [
-    //     { href: "/users/list", label: "Users list" },
-    //     { href: "/users/profile", label: "Profile" },
-    //     { href: "/users/feed", label: "Feed" },
-    //     { href: "/users/settings", label: "Settings" },
-    //   ],
-    // },
-    {
-      icon: HiDocumentReport,
-      label: i18n('assessment'),
-      items: [
-        { href: "/pages/pricing", label: i18n('physical')},
-        { href: "/pages/maintenance", label: i18n('mental') },
-        { href: "/pages/404", label: i18n('health_record') },
-      ],
-    },
-    {
-      icon: HiOutlinePencilAlt,
-      label: i18n('training'),
-      items: [
-        { href: "/authentication/sign-in", label:  i18n('info') },
-        { href: "/authentication/sign-up", label:  i18n('material') },
-        { href: "/authentication/forgot-password", label:  i18n('video') },
-      ],
-    },
+    { href: "/brand", icon: HiOfficeBuilding, label:i18n('brand') },
+    { href: "/category", icon: HiViewGrid , label:i18n('category') },
+    { href: "/product", icon: HiShoppingCart, label:i18n('product') },
+    { href: "/order", icon: HiCurrencyDollar , label:i18n('order') },
   ];
-
-  const externalPages: SidebarItem[] = [
-    {
-      href: "/",
-      target: "_blank",
-      icon: HiOutlineTable,
-      label: i18n('schedule'),
-    },
-    {
-      href: "https://polyu.edu.hk",
-      target: "_blank",
-      icon: HiSupport,
-      label: i18n('help'),
-    },
-  ];
-  
-
 
   return (
     <Sidebar
@@ -164,14 +104,8 @@ function DesktopSidebar() {
                 <SidebarItem key={item.label} {...item} pathname={pathname} />
               ))}
             </Sidebar.ItemGroup>
-            <Sidebar.ItemGroup className="mt-2 pt-2">
-              {externalPages.map((item) => (
-                <SidebarItem key={item.label} {...item} pathname={pathname} />
-              ))}
-            </Sidebar.ItemGroup>
           </Sidebar.Items>
         </div>
-        {/* <BottomMenu isCollapsed={isCollapsed} /> */}
       </div>
     </Sidebar>
   );
@@ -186,60 +120,10 @@ function MobileSidebar() {
   const i18n = useTranslations('sidebar');
   const pages: SidebarItem[] = [
     { href: "/", icon: HiChartPie, label: i18n('dashboard') },
-    { href: "/trainee", icon: HiUsers, label:i18n('trainee') },
-    // { href: "/mailing/inbox", icon: HiInboxIn, label: "Inbox", badge: "3" },
-    // {
-    //   icon: HiShoppingBag,
-    //   label: "E-commerce",
-    //   items: [
-    //     { href: "/e-commerce/products", label: "Products" },
-    //     { href: "/e-commerce/billing", label: "Billing" },
-    //     { href: "/e-commerce/invoice", label: "Invoice" },
-    //   ],
-    // },
-    // {
-    //   icon: HiUsers,
-    //   label: "Users",
-    //   items: [
-    //     { href: "/users/list", label: "Users list" },
-    //     { href: "/users/profile", label: "Profile" },
-    //     { href: "/users/feed", label: "Feed" },
-    //     { href: "/users/settings", label: "Settings" },
-    //   ],
-    // },
-    {
-      icon: HiDocumentReport,
-      label: i18n('assessment'),
-      items: [
-        { href: "/pages/pricing", label: i18n('physical')},
-        { href: "/pages/maintenance", label: i18n('mental') },
-        { href: "/pages/404", label: i18n('health_record') },
-      ],
-    },
-    {
-      icon: HiOutlinePencilAlt,
-      label: i18n('training'),
-      items: [
-        { href: "/authentication/sign-in", label:  i18n('info') },
-        { href: "/authentication/sign-up", label:  i18n('material') },
-        { href: "/authentication/forgot-password", label:  i18n('video') },
-      ],
-    },
-  ];
-
-  const externalPages: SidebarItem[] = [
-    {
-      href: "/",
-      target: "_blank",
-      icon: HiOutlineTable,
-      label: i18n('schedule'),
-    },
-    {
-      href: "https://polyu.edu.hk",
-      target: "_blank",
-      icon: HiSupport,
-      label: i18n('help'),
-    },
+    { href: "/brand", icon: HiOfficeBuilding, label:i18n('brand') },
+    { href: "/category", icon: HiViewGrid , label:i18n('category') },
+    { href: "/product", icon: HiShoppingCart, label:i18n('product') },
+    { href: "/order", icon: HiCurrencyDollar , label:i18n('order') },
   ];
 
   return (
@@ -254,23 +138,9 @@ function MobileSidebar() {
       >
         <div className="flex h-full flex-col justify-between">
           <div className="py-2">
-            {/* <form className="pb-3">
-              <TextInput
-                icon={HiSearch}
-                type="search"
-                placeholder="Search"
-                required
-                size={32}
-              />
-            </form> */}
             <Sidebar.Items>
               <Sidebar.ItemGroup className="mt-0 border-t-0 pb-1 pt-0">
                 {pages.map((item) => (
-                  <SidebarItem key={item.label} {...item} pathname={pathname} />
-                ))}
-              </Sidebar.ItemGroup>
-              <Sidebar.ItemGroup className="mt-2 pt-2">
-                {externalPages.map((item) => (
                   <SidebarItem key={item.label} {...item} pathname={pathname} />
                 ))}
               </Sidebar.ItemGroup>

@@ -1,7 +1,7 @@
 {
     "navBar": {
-        "title": "Jockey Club Health Support Project for Persons with Disabilities",
-        "title_mobile": "JCHSP - PWD",
+        "title": "COMP5322 Inventory System",
+        "title_mobile": "Inventory System",
         "lang": "EN",
         "light_mode": "Toggle light mode",
         "dark_mode": "Toggle dark mode",
@@ -25,34 +25,26 @@
     },
     "sidebar":{
         "dashboard":"Dashboard",
-        "trainee":"Trainee",
-        "assessment":"Assessment",
-        "physical": "Physical",
-        "mental":"Mental Health",
-        "health_record":"Health Record",
-        "training":"Training",
-        "schedule":"Schedule",
-        "help":"Help",
-        "info":"Information",
-        "material":"Materials",
-        "video":"Video"
+        "brand":"Brand",
+        "category":"Category",
+        "product": "Product",
+        "order":"Order"
     },
     "pagination":{
         "show_per_page":"Show per page",
         "total":"Total",
         "item":"items"
     },
-    "trainee":{
+    "brand":{
         "main": "Main",
-        "trainee": "Trainee",
+        "brand": "Brand",
         "setting": "Settings",
-        "search": "Search for trainee...",
-        "create":"Create trainee",
+        "search": "Search for brand...",
+        "create":"Create brand",
         "export":"Export data",
         "status1":"Not applied",
         "status2":"Applied",
-        "name": "Name (Chi)",
-        "name_en": "Name (Eng)",
+        "name": "Name",
         "email":"Email",
         "address":"Address",
         "gender":"Gender",

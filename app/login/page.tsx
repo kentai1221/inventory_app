@@ -29,7 +29,7 @@ export default function LoginPage() {
     <>
      
 
-    <div className="mx-auto flex flex-col items-center justify-center px-6 pt-28 md:h-screen lg:pt-0">
+    <div className="w-full mx-auto flex flex-col items-center justify-center px-6 pt-28 md:h-screen lg:pt-0">
       <Card
         horizontal
         className="w-full md:max-w-screen-lg"
@@ -69,27 +69,11 @@ export default function LoginPage() {
                     height={150}
                   />
                   <Image
-                    className='flex items-center pr-5 pb-5 md:pb-0 dark:hidden'
-                    alt=""
-                    src="/hkjc.png"
-                    width={300}
-                    height={65}
-                  />
-
-                  <Image
                     className='items-center pr-5 pb-5 md:pb-0 hidden dark:flex'
                     alt=""
                     src="/PolyU-Logo_w.png"
                     width={300}
                     height={150}
-                  />
-
-                  <Image
-                    className='flex items-center p-2 pr-5 pb-5 md:pb-0 hidden dark:flex'
-                    alt=""
-                    src="/hkjc_w.png"
-                    width={300}
-                    height={65}
                   />
                 </div>
 

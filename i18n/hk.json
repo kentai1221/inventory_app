@@ -1,7 +1,7 @@
 {
     "navBar": {
-        "title": "賽馬會共「健」里程支援計劃",
-        "title_mobile": "JCHSP - PWD",
+        "title": "COMP5322 庫存系統",
+        "title_mobile": "庫存系統",
         "lang": "繁",
         "light_mode": "切換淺色模式",
         "dark_mode": "切換深色模式",
@@ -25,34 +25,26 @@
     },
     "sidebar":{
         "dashboard":"儀表板",
-        "trainee":"學員",
-        "assessment":"評估",
-        "physical": "物理評估",
-        "mental":"精神健康",
-        "health_record":"健康記錄",
-        "training":"訓練計劃",
-        "schedule":"日程表",
-        "help":"幫助",
-        "info":"資料",
-        "material":"教材",
-        "video":"影片"
+        "brand":"品牌",
+        "category":"分類",
+        "product": "產品",
+        "order":"訂單"
     },
     "pagination":{
         "show_per_page":"每頁顯示",
         "total":"總共",
         "item":"個項目"
     },
-    "trainee":{
+    "brand":{
         "main": "首頁",
-        "trainee": "學員",
+        "brand": "品牌",
         "setting": "設定",
-        "search": "搜尋學員...",
-        "create":"新增學員",
+        "search": "搜尋品牌...",
+        "create":"新增品牌",
         "export":"匯出資料表",
         "status1":"未申請",
         "status2":"已申請",
-        "name": "中文名",
-        "name_en": "英文名",
+        "name": "名稱",
         "email":"電郵",
         "address":"地址",
         "gender":"性別",

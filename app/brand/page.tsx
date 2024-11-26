@@ -1,9 +1,9 @@
 import {getTranslations} from 'next-intl/server';
 import Pagination from '@/app/ui/pagination';
 import Search from '@/app/ui/search';
-import TraineeTable from '@/app/ui/trainee/table';
+import BrandTable from '@/app/ui/brand/table';
 import { CreateButton,ExportButton } from '@/app/ui/button';
-import {CreateTraineeBtn} from '@/app/ui/trainee/addBrandBtn'
+import {CreateBrandBtn} from '@/app/ui/trainee/addBrandBtn'
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchTraineeTotalPage } from '@/app/lib/data';
@@ -31,7 +31,7 @@ export default async function Page(
 
   const [total] = await Promise.all([fetchTraineeTotalPage(queryStr,pageSize)]);
 
-  const i18n = await getTranslations('trainee');
+  const i18n = await getTranslations('brand');
 
   return (
 
@@ -46,10 +46,10 @@ export default async function Page(
                   <Link href="/"><span className="dark:text-white">{i18n('main')}</span></Link>
                 </div>
               </Breadcrumb.Item>
-              <Breadcrumb.Item>{i18n('trainee')}</Breadcrumb.Item>
+              <Breadcrumb.Item>{i18n('brand')}</Breadcrumb.Item>
             </Breadcrumb>
             <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-            {i18n('trainee')}
+            {i18n('brand')}
             </h1>
           </div>
           <div className="sm:flex">
@@ -57,9 +57,7 @@ export default async function Page(
               <Search placeholder={i18n('search')} />
             </div>
             <div className="ml-auto flex items-center space-x-2 sm:space-x-3">
-              <CreateTraineeBtn />
-              {/*<CreateButton url="/trainee/create" text={i18n('create')} />
-              <ExportButton url="/trainee/export" text={i18n('export')} />*/}
+              <CreateBrandBtn />
             </div>
           </div>
         </div>
@@ -74,7 +72,7 @@ export default async function Page(
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden shadow">
               <Suspense key={queryStr + pageNo} fallback={<InvoicesTableSkeleton />}>
-                <TraineeTable queryStr={queryStr} pageNo={pageNo} pageSize={pageSize} />
+                <BrandTable queryStr={queryStr} pageNo={pageNo} pageSize={pageSize} />
               </Suspense>
             </div>
           </div>
