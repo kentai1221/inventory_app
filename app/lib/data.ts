@@ -579,3 +579,43 @@ export async function fetchBrand(queryStr:string,pageNo:number,pageSize:number) 
   }
 
 }
+
+export async function fetchBrandTotalPage(queryStr:string,pageSize:number) {
+
+  const session = await auth();
+  const jwt = session?.user?.id;
+
+  if (!jwt) {
+    throw new Error('JWT is missing or invalid. Authorization failed.');
+  }
+
+  const query = qs.stringify({
+    query:queryStr
+  });
+
+  try {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/brand/search?${query}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+    
+    if (!response.ok) {
+      throw new Error(`API error`);
+    }
+
+    const totalItems = await response.json();
+    const totalPages = Math.ceil(Number(totalItems) / pageSize);
+    return {
+      totalPages: totalPages,
+      totalItems: totalItems
+    };
+    
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch brand data.');
+  }
+}

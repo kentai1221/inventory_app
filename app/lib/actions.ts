@@ -580,7 +580,7 @@ export async function changePwd(prevState: FormState, formData: FormData){
     };
 }
 
-export async function createTrainee(prevState: State, formData: FormData): Promise<{
+export async function createBrand(prevState: State, formData: FormData): Promise<{
     message: string;
     payload?: FormData;
     error?: string;
@@ -717,3 +717,34 @@ export async function deleteTrainee(id: string) {
 
     revalidatePath('/trainee');
 }
+
+export async function deleteBrand(id: string) {
+
+    const session = await auth();
+    const jwt = session?.user?.id;
+  
+    if (!jwt) {
+      throw new Error('JWT is missing or invalid. Authorization failed.');
+    }
+
+   
+    try {
+        let response = await fetch(`${process.env.BACKEND_URL}/api/brands/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+    } catch (error) {
+        return { message: 'Failed to delete brand.' };
+    }
+
+    revalidatePath('/trainee');
+}
+

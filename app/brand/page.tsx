@@ -3,10 +3,10 @@ import Pagination from '@/app/ui/pagination';
 import Search from '@/app/ui/search';
 import BrandTable from '@/app/ui/brand/table';
 import { CreateButton,ExportButton } from '@/app/ui/button';
-import {CreateBrandBtn} from '@/app/ui/trainee/addBrandBtn'
+import {CreateBrandBtn} from '@/app/ui/brand/addBrandBtn'
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-import { fetchTraineeTotalPage } from '@/app/lib/data';
+import { fetchBrandTotalPage } from '@/app/lib/data';
 import Link from "next/link";
 import {
   Breadcrumb,
@@ -29,7 +29,7 @@ export default async function Page(
   const pageNo = Number(searchParams?.page) || 1;
   const pageSize = Number(searchParams?.size) || 5;
 
-  const [total] = await Promise.all([fetchTraineeTotalPage(queryStr,pageSize)]);
+  const [total] = await Promise.all([fetchBrandTotalPage(queryStr,pageSize)]);
 
   const i18n = await getTranslations('brand');
 

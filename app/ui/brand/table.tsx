@@ -1,10 +1,7 @@
-import Image from 'next/image';
 import {getTranslations} from 'next-intl/server';
-import { UpdateInvoice} from '@/app/ui/button';
-import { DeleteTrainee} from '@/app/ui/trainee/deleteButton';
-import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
+import { UpdateBtn } from '@/app/ui/button';
+import { DeleteBrand } from '@/app/ui/brand/deleteButton';
 import { Brand } from '@/app/lib/definitions';
-const qs = require('qs');
 import { fetchBrand } from '@/app/lib/data';
 
 export default async function BrandTable({
@@ -39,8 +36,8 @@ export default async function BrandTable({
                 </div>
                 <div className="flex w-full items-center justify-between pt-4 dark:text-white">
                   <div className="flex justify-end gap-2 dark:text-white">
-                    <UpdateInvoice url={`/brand/${b.documentId}/edit`} />
-                    <DeleteTrainee id={b.documentId} />
+                    <UpdateBtn url={`/brand/${b.documentId}/edit`} />
+                    <DeleteBrand id={b.documentId} />
                   </div>
                 </div>
               </div>
@@ -70,8 +67,8 @@ export default async function BrandTable({
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3 text-gray-900 dark:text-white">
                     <div className="flex justify-end gap-3">
-                      <UpdateInvoice url={`/brand/${b.documentId}/edit`}  />
-                      <DeleteTrainee id={b.documentId} />
+                      <UpdateBtn url={`/brand/${b.documentId}/edit`}  />
+                      <DeleteBrand id={b.documentId} />
                     </div>
                   </td>
                 </tr>

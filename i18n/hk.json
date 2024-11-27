@@ -88,10 +88,10 @@
         "relationship":"關係",
         "err":"變更失敗，資料不正確",
         "branch":"地點",
-        "exist":"學員已存在",
+        "exist":"品牌已存在",
         "del_gurdian_msg":"確定要刪除監護人嗎?",
-        "del_trainee":"刪除學員",
-        "del_trainee_msg":"確定要刪除學員嗎?",
+        "del_brand":"刪除品牌",
+        "del_brand_msg":"確定要刪除品牌嗎?",
         "del_gurdian":"刪除監護人",
         "del":"刪除",
         "cancel":"取消"

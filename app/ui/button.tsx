@@ -36,7 +36,7 @@ export function ExportButton({ url, text }: {url:string, text:string}) {
   );
 }
 
-export function UpdateInvoice({ url }: { url: string }) {
+export function UpdateBtn({ url }: { url: string }) {
   return (
     <Link
       href={url}
