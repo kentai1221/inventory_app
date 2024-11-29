@@ -8,28 +8,28 @@ import { Breadcrumb, Card,Button,
 import Image from "next/image";
 import Link from "next/link";
 import { HiHome,HiCloudUpload } from "react-icons/hi";
-import { fetchTraineeById } from '@/app/lib/data';
+import { fetchBrandById } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
 import { ChgImgBtn } from '@/app/ui/trainee/chgImgBtn';
 import {CreateContactBtn} from '@/app/ui/trainee/addContactBtn';
 import {DeleteGuardianBtn} from '@/app/ui/trainee/deleteGuardianBtn';
-import { updateTrainee } from '@/app/lib/actions';
+import { updateBrand } from '@/app/lib/actions';
 
 export default async function Page(
     props: { params: Promise<{ id: string }>, searchParams?: Promise<{done?:boolean;}> }
 ) {
     const searchParams = await props.searchParams;
     const params = await props.params;
-    const i18n = await getTranslations('trainee');
+    const i18n = await getTranslations('brand');
     const id = params.id;
     const done = searchParams?.done || null;
-    const [trainee] = await Promise.all([fetchTraineeById(id)]);
+    const [trainee] = await Promise.all([fetchBrandById(id)]);
 
     if (!trainee) {
         notFound();
     }
 
-    const updateTraineeWithId = updateTrainee.bind(null, id);
+    const updateBrandWithId = updateBrand.bind(null, id);
 
     return (
         <main>

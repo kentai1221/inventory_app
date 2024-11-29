@@ -94,7 +94,9 @@
         "del_brand_msg":"確定要刪除品牌嗎?",
         "del_gurdian":"刪除監護人",
         "del":"刪除",
-        "cancel":"取消"
+        "cancel":"取消",
+        "available":"可用",
+        "unavailable":"不可用"
     },
     "mainpage":{
         "chart1":"圖表1",

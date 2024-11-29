@@ -94,7 +94,9 @@
         "del_gurdian":"Delete Guardian",
         "del_gurdian_msg":"Are you sure to delete the guardian?",
         "del":"Delete",
-        "cancel":"Cancel"
+        "cancel":"Cancel",
+        "available":"Available",
+        "unavailable":"Not available"
     },
     "mainpage":{
         "chart1":"Chart 1",

@@ -1,5 +1,5 @@
 "use client"
-import { FileInput, Label, Button, TextInput, Modal, Table, Select, ToggleSwitch } from "flowbite-react";
+import { FileInput, Label, Button, TextInput, Modal, Table, Select } from "flowbite-react";
 import { useEffect,useState } from "react";
 import { createBrand, FormState } from '@/app/lib/actions';
 import {useTranslations, useLocale} from 'next-intl';
@@ -15,13 +15,9 @@ export function CreateBrandBtn() {
         img: false,
       });
     const [openModal, setOpenModal] = useState(false);
-    const [switch1, setSwitch1] = useState(false);
     const i18n = useTranslations('brand');
     const initialState: FormState = { message: null };
     const [state, formAction, isPending] = useActionState(createBrand, initialState);
-    const locale = useLocale();
-    const pathname = usePathname();
-    const { replace } = useRouter();
     const closeModal = () => {
         setOpenModal(false);
     };
@@ -42,8 +38,13 @@ export function CreateBrandBtn() {
                               <Label htmlFor="name" value={i18n('name')} />
                             </div>
                             <TextInput id="name" name="name" />
-
-                            <ToggleSwitch checked={switch1} label="Toggle me" onChange={setSwitch1} />
+                            <div className="mt-5 mb-2 block">
+                              <Label htmlFor="status" value={i18n('status')} />
+                            </div>
+                            <Select id="status" name="status" defaultValue={'true'} >
+                                <option key={"T"} value='true'>{i18n('available')}</option>
+                                <option key={"F"} value='false'>{i18n('unavailable')}</option>
+                            </Select>
                             {state?.message=="failed" && <p className="mt-5 text-sm text-red-500">{i18n('err')}</p>}
                             {state?.message=="exist" && <p className="mt-5 text-sm text-red-500">{i18n('exist')}</p>}
                             <Button className="w-full mt-5" type="submit">{isPending?'Loading':`${i18n('save')}`}</Button>

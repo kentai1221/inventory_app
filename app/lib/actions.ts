@@ -349,7 +349,7 @@ export async function modifyPhoto(prevState: State, formData: FormData) {
     }
 }
 
-export async function updateTrainee(id: string, formData: FormData) : Promise<{
+export async function updateBrand(id: string, formData: FormData) : Promise<{
     message: string;
     payload?: FormData;
     error?: string;
@@ -363,29 +363,12 @@ export async function updateTrainee(id: string, formData: FormData) : Promise<{
     }
 
 
-    let response = await fetch(`${process.env.BACKEND_URL}/api/trainees/${id}`, {
+    let response = await fetch(`${process.env.BACKEND_URL}/api/brands/${id}`, {
         method: 'PUT',
         body: JSON.stringify({
             'data': {
-                'name_tc':formData.get('name_chi'),
-                'name_en':formData.get('name_en'),
-                'hkid':formData.get('hkid'),
-                'gender':formData.get('gender'),
-                'address':formData.get('address'),
-                'email':formData.get('email'),
-                'phone':formData.get('phone'),
-                'birth':formData.get('birthday')||null,
-                'join_date':formData.get('join_date')||null,
-                'age':formData.get('age')?Number(formData.get('age')):null,
-                'trainee_no':formData.get('trainee_no'),
-                'ehealth_applied':formData.get('ehealth')=='true'?true:false,
-                'intellectual_level':formData.get('intellectual_level'),
-                'diet_type':formData.get('diet_type'),
-                'diagnosis':formData.get('diagnosis'),
-                'food_allergy':formData.get('food_allergy'),
-                'drug_allergy':formData.get('drug_allergy'),
-                'surgery_record':formData.get('surgery_record'),
-                'injection_record':formData.get('injection_record'),
+                'name':formData.get('name_chi'),
+                'brand_status':formData.get('name_en')
             }
         }),
         headers: {
@@ -408,7 +391,7 @@ export async function updateTrainee(id: string, formData: FormData) : Promise<{
     }
 
     //revalidatePath(`/trainee/${id}/edit`);
-    redirect(`/trainee/${id}/edit?done=1`);
+    redirect(`/brand/${id}/edit?done=1`);
 }
 
 
@@ -596,58 +579,19 @@ export async function createBrand(prevState: State, formData: FormData): Promise
         };
     }
 
-    const trainee_no = formData?.get('trainee_no');
-    const branch = formData?.get('branch');
+    const name = formData?.get('name');
+    const status = formData?.get('status');
 
-    if (!trainee_no || !branch) {
+    if (!name || !status) {
         return {
             message: 'failed',
             error: 'Form data validation failed',
         };
     }
-    const qs = require('qs');
-    const query = qs.stringify({
-        filters: {
-            trainee_no : trainee_no,
-            branch: {
-                documentId: { $in: branch },
-            },
-        },
-        populate: {
-          branch: {
-            populate: true
-          }
-        }
-      });
-
-    try {
-        const response = await fetch(`${process.env.BACKEND_URL}/api/trainees?${query}`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${jwt}`,
-            },
-          });
-        const json = await response.json();
-        if(json.data.length>0){
-            return {
-                message: 'exist'
-            };
-        }
-        if (!response.ok) {
-          throw new Error(`API responded with status ${response.status}: ${json.message}`);
-        }
-    } catch (error: any) {
-        return {
-            message: 'failed',
-            error: error.message,
-        };
-    }
 
     try {
        
-        const response = await fetch(`${process.env.BACKEND_URL}/api/trainees`, {
+        const response = await fetch(`${process.env.BACKEND_URL}/api/brands`, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${jwt}`,
@@ -655,10 +599,8 @@ export async function createBrand(prevState: State, formData: FormData): Promise
             },
             body: JSON.stringify({
                 data: {
-                    trainee_no,
-                    branch: {
-                        connect: [branch],
-                    },
+                    name: name,
+                    "brand_status":status=="false"?false:true
                 },
             }),
         });
@@ -672,10 +614,7 @@ export async function createBrand(prevState: State, formData: FormData): Promise
             };
         }
 
-        const jsonResponse = await response.json();
-        formData.set('tid',jsonResponse.data.documentId);
-        //revalidatePath(`/trainee/${jsonResponse.data.documentId}/edit`);
-        //console.log(jsonResponse.data.documentId)
+        revalidatePath(`/brand`);
         return {
             message: 'success',
             payload: formData,
@@ -745,6 +684,6 @@ export async function deleteBrand(id: string) {
         return { message: 'Failed to delete brand.' };
     }
 
-    revalidatePath('/trainee');
+    revalidatePath('/brand');
 }
 
