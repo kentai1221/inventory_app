@@ -67,6 +67,24 @@ export type Brand = {
   brand_status: boolean;
 }
 
+export type Category = {
+  documentId: string;
+  name: string;
+  category_status: boolean;
+}
+
+export type Product = {
+  documentId: string;
+  name: string;
+  quantity: number;
+  price: number;
+  brand: Brand;
+  category: Category;
+  image: any;
+  product_status: boolean;
+}
+
+
 export type Revenue = {
   month: string;
   revenue: number;

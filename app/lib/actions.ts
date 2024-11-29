@@ -349,170 +349,6 @@ export async function modifyPhoto(prevState: State, formData: FormData) {
     }
 }
 
-export async function updateBrand(id: string, formData: FormData) : Promise<{
-    message: string;
-    payload?: FormData;
-    error?: string;
-}> {
-
-    const session = await auth();
-    const jwt = session?.user?.id;
-  
-    if (!jwt) {
-      throw new Error('JWT is missing or invalid. Authorization failed.');
-    }
-
-
-    let response = await fetch(`${process.env.BACKEND_URL}/api/brands/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-            'data': {
-                'name':formData.get('name_chi'),
-                'brand_status':formData.get('name_en')
-            }
-        }),
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: `Bearer ${jwt}`,
-        }
-    })
-
-    if (!response.ok) {
-        const errorDetails = await response.text();
-         console.log(errorDetails)
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    let data;
-    try {
-        data = await response.json();
-    } catch (error) {
-        throw new Error('Failed to parse JSON response: ' + error);
-    }
-
-    //revalidatePath(`/trainee/${id}/edit`);
-    redirect(`/brand/${id}/edit?done=1`);
-}
-
-
-export async function createGuardian(prevState: State, formData: FormData): Promise<{
-    message: string;
-    payload?: FormData;
-    error?: string;
-}> {
-    
-    const session = await auth();
-    const jwt = session?.user?.id;
-   
-    if (!jwt) {
-        return {
-            message: 'failed',
-            error: 'JWT is missing or invalid',
-        };
-    }
-
-    // Extract trainee ID and other data from FormData
-    const id = formData.get('id');
-    const name = formData.get('gname');
-    const phone = formData.get('phone');
-    const relationship = formData.get('relationship');
-
-    if (!id || !name || !phone || !relationship) {
-        return {
-            message: 'failed',
-            error: 'Form data validation failed',
-        };
-    }
-
-    try {
-       
-        const response = await fetch(`${process.env.BACKEND_URL}/api/guardians`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${jwt}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                data: {
-                    name,
-                    phone,
-                    relationship,
-                    trainee: {
-                        connect: [id],
-                    },
-                },
-            }),
-        });
-
-        if (!response.ok) {
-            const errorDetails = await response.text();
-            return {
-                message: `failed`,
-                payload: formData,
-                error: errorDetails,
-            };
-        }
-
-        revalidatePath(`/trainee/${id}/edit`);
-
-        return {
-            message: 'success',
-        };
-    } catch (error: any) {
-        return {
-            message: 'failed',
-            error: error.message,
-        };
-    }
-}
-
-export async function deleteGuardian(prevState: State, formData: FormData): Promise<{
-    message: string;
-    payload?: FormData;
-    error?: string;
-}> {
-
-    const session = await auth();
-    const jwt = session?.user?.id;
-    const id = formData.get('id');
-    const gid = formData.get('gid');
-  
-    if (!jwt) {
-      throw new Error('JWT is missing or invalid. Authorization failed.');
-    }
-    
-    try {
-        let response = await fetch(`${process.env.BACKEND_URL}/api/guardians/${gid}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json',
-                Authorization: `Bearer ${jwt}`,
-            }
-        })
-
-        if (!response.ok) {
-            const errorDetails = await response.text();
-            return {
-                message: `failed`,
-                payload: formData,
-                error: errorDetails,
-            };
-        }
-
-        revalidatePath(`/trainee/${id}/edit`);
-        return {
-            message: 'success',
-        };
-
-    } catch (error: any) {
-        return {
-            message: 'failed',
-            error: error.message,
-        };
-    }
-    
-}
-
 export async function changePwd(prevState: FormState, formData: FormData){
  
     const session = await auth();
@@ -627,7 +463,12 @@ export async function createBrand(prevState: State, formData: FormData): Promise
     }
 }
 
-export async function deleteTrainee(id: string) {
+
+export async function updateBrand(id: string, formData: FormData) : Promise<{
+    message: string;
+    payload?: FormData;
+    error?: string;
+}> {
 
     const session = await auth();
     const jwt = session?.user?.id;
@@ -636,25 +477,36 @@ export async function deleteTrainee(id: string) {
       throw new Error('JWT is missing or invalid. Authorization failed.');
     }
 
-   
-    try {
-        let response = await fetch(`${process.env.BACKEND_URL}/api/trainees/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json',
-                Authorization: `Bearer ${jwt}`,
-            }
-        })
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+    let response = await fetch(`${process.env.BACKEND_URL}/api/brands/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            'data': {
+                'name':formData.get('name'),
+                'brand_status':formData.get('status')
+            }
+        }),
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${jwt}`,
         }
-        
+    })
+
+    if (!response.ok) {
+        const errorDetails = await response.text();
+         console.log(errorDetails)
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    let data;
+    try {
+        data = await response.json();
     } catch (error) {
-        return { message: 'Failed to delete trainee.' };
+        throw new Error('Failed to parse JSON response: ' + error);
     }
 
-    revalidatePath('/trainee');
+    //revalidatePath(`/trainee/${id}/edit`);
+    redirect(`/brand/${id}/edit?done=1`);
 }
 
 export async function deleteBrand(id: string) {
@@ -687,3 +539,285 @@ export async function deleteBrand(id: string) {
     revalidatePath('/brand');
 }
 
+
+//Category
+export async function createCategory(prevState: State, formData: FormData): Promise<{
+    message: string;
+    payload?: FormData;
+    error?: string;
+}> {
+    
+    const session = await auth();
+    const jwt = session?.user?.id;
+   
+    if (!jwt) {
+        return {
+            message: 'failed',
+            error: 'JWT is missing or invalid',
+        };
+    }
+
+    const name = formData?.get('name');
+    const status = formData?.get('status');
+
+    if (!name || !status) {
+        return {
+            message: 'failed',
+            error: 'Form data validation failed',
+        };
+    }
+
+    try {
+       
+        const response = await fetch(`${process.env.BACKEND_URL}/api/categories`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                data: {
+                    name: name,
+                    "category_status":status=="false"?false:true
+                },
+            }),
+        });
+
+        if (!response.ok) {
+            const errorDetails = await response.text();
+            return {
+                message: `failed`,
+                payload: formData,
+                error: errorDetails,
+            };
+        }
+
+        revalidatePath(`/category`);
+        return {
+            message: 'success',
+            payload: formData,
+        };
+    } catch (error: any) {
+        return {
+            message: 'failed',
+            error: error.message,
+        };
+    }
+}
+
+
+export async function updateCategory(id: string, formData: FormData) : Promise<{
+    message: string;
+    payload?: FormData;
+    error?: string;
+}> {
+
+    const session = await auth();
+    const jwt = session?.user?.id;
+  
+    if (!jwt) {
+      throw new Error('JWT is missing or invalid. Authorization failed.');
+    }
+
+
+    let response = await fetch(`${process.env.BACKEND_URL}/api/categories/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            'data': {
+                'name':formData.get('name'),
+                'category_status':formData.get('status')
+            }
+        }),
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${jwt}`,
+        }
+    })
+
+    if (!response.ok) {
+        const errorDetails = await response.text();
+         console.log(errorDetails)
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    let data;
+    try {
+        data = await response.json();
+    } catch (error) {
+        throw new Error('Failed to parse JSON response: ' + error);
+    }
+
+    //revalidatePath(`/trainee/${id}/edit`);
+    redirect(`/category/${id}/edit?done=1`);
+}
+
+export async function deleteCategory(id: string) {
+
+    const session = await auth();
+    const jwt = session?.user?.id;
+  
+    if (!jwt) {
+      throw new Error('JWT is missing or invalid. Authorization failed.');
+    }
+
+   
+    try {
+        let response = await fetch(`${process.env.BACKEND_URL}/api/categories/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+    } catch (error) {
+        return { message: 'Failed to delete category.' };
+    }
+
+    revalidatePath('/category');
+}
+
+//Product
+export async function createProduct(prevState: State, formData: FormData): Promise<{
+    message: string;
+    payload?: FormData;
+    error?: string;
+}> {
+    
+    const session = await auth();
+    const jwt = session?.user?.id;
+   
+    if (!jwt) {
+        return {
+            message: 'failed',
+            error: 'JWT is missing or invalid',
+        };
+    }
+
+    const name = formData?.get('name');
+    const status = formData?.get('status');
+
+    if (!name || !status) {
+        return {
+            message: 'failed',
+            error: 'Form data validation failed',
+        };
+    }
+
+    try {
+       
+        const response = await fetch(`${process.env.BACKEND_URL}/api/products`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                data: {
+                    name: name,
+                    "product_status":status=="false"?false:true
+                },
+            }),
+        });
+
+        if (!response.ok) {
+            const errorDetails = await response.text();
+            return {
+                message: `failed`,
+                payload: formData,
+                error: errorDetails,
+            };
+        }
+
+        revalidatePath(`/product`);
+        return {
+            message: 'success',
+            payload: formData,
+        };
+    } catch (error: any) {
+        return {
+            message: 'failed',
+            error: error.message,
+        };
+    }
+}
+
+
+export async function updateProduct(id: string, formData: FormData) : Promise<{
+    message: string;
+    payload?: FormData;
+    error?: string;
+}> {
+
+    const session = await auth();
+    const jwt = session?.user?.id;
+  
+    if (!jwt) {
+      throw new Error('JWT is missing or invalid. Authorization failed.');
+    }
+
+
+    let response = await fetch(`${process.env.BACKEND_URL}/api/products/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            'data': {
+                'name':formData.get('name'),
+                'product_status':formData.get('status')
+            }
+        }),
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${jwt}`,
+        }
+    })
+
+    if (!response.ok) {
+        const errorDetails = await response.text();
+         console.log(errorDetails)
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    let data;
+    try {
+        data = await response.json();
+    } catch (error) {
+        throw new Error('Failed to parse JSON response: ' + error);
+    }
+
+    //revalidatePath(`/trainee/${id}/edit`);
+    redirect(`/product/${id}/edit?done=1`);
+}
+
+export async function deleteProduct(id: string) {
+
+    const session = await auth();
+    const jwt = session?.user?.id;
+  
+    if (!jwt) {
+      throw new Error('JWT is missing or invalid. Authorization failed.');
+    }
+
+   
+    try {
+        let response = await fetch(`${process.env.BACKEND_URL}/api/products/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+    } catch (error) {
+        return { message: 'Failed to delete product.' };
+    }
+
+    revalidatePath('/product');
+}

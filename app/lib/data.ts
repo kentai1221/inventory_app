@@ -388,46 +388,6 @@ export async function fetchTotalPage(queryStr:string,pageSize:number) {
   }
 }
 
-export async function fetchTraineeTotalPage(queryStr:string,pageSize:number) {
-
-  const session = await auth();
-  const jwt = session?.user?.id;
-
-  if (!jwt) {
-    throw new Error('JWT is missing or invalid. Authorization failed.');
-  }
-
-  const query = qs.stringify({
-    query:queryStr
-  });
-
-  try {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/trainee/search?${query}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-    
-    if (!response.ok) {
-      throw new Error(`API error`);
-    }
-
-    const totalItems = await response.json();
-    const totalPages = Math.ceil(Number(totalItems) / pageSize);
-    return {
-      totalPages: totalPages,
-      totalItems: totalItems
-    };
-    
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch trainee data.');
-  }
-}
-
 export async function fetchInvoices(queryStr:string,pageNo:number,pageSize:number) {
 
   const session = await auth();
@@ -467,46 +427,7 @@ export async function fetchInvoices(queryStr:string,pageNo:number,pageSize:numbe
 
 }
 
-export async function fetchTrainee(queryStr:string,pageNo:number,pageSize:number) {
-
-  const session = await auth();
-  const jwt = session?.user?.id;
-
-  if (!jwt) {
-    throw new Error('JWT is missing or invalid. Authorization failed.');
-  }
-
-  const query = qs.stringify({
-    query:queryStr,
-    limit:pageSize,
-    start:(pageNo-1)*pageSize,
-  });
-
-  try {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/trainee/search?${query}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-    const trainee = await response.json();
-
-    if (!response.ok) {
-      throw new Error(`API responded with status ${response.status}: ${trainee.message}`);
-    }
-
-    return trainee
-
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch trainee data.');
-  }
-
-}
-
-export async function fetchTraineeById(id:string) {
+export async function fetchBrandById(id:string) {
 
   const session = await auth();
   const jwt = session?.user?.id;
@@ -516,7 +437,7 @@ export async function fetchTraineeById(id:string) {
   }
 
   try {
-      const response = await fetch(`${process.env.BACKEND_URL}/api/trainees/${id}?populate=*`,
+      const response = await fetch(`${process.env.BACKEND_URL}/api/brands/${id}?populate=*`,
         {
           method: 'GET',
           headers: {
@@ -524,18 +445,13 @@ export async function fetchTraineeById(id:string) {
             Authorization: `Bearer ${jwt}`,
           },
         });
-      const trainee = await response.json();
-      //console.log(trainee)
-  
-      /*if (!response.ok) {
-          throw new Error(`API error`);
-      }*/
+      const brand = await response.json();
 
-      return trainee.data;
+      return brand.data;
       
   } catch (error) {
       console.error('Database Error:', error);
-      throw new Error('Failed to fetch trainee data.');
+      throw new Error('Failed to fetch brand data.');
   }
 
 }
@@ -617,5 +533,227 @@ export async function fetchBrandTotalPage(queryStr:string,pageSize:number) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch brand data.');
+  }
+}
+
+//Category
+
+export async function fetchCategoryById(id:string) {
+
+  const session = await auth();
+  const jwt = session?.user?.id;
+
+  if (!jwt) {
+    throw new Error('JWT is missing or invalid. Authorization failed.');
+  }
+
+  try {
+      const response = await fetch(`${process.env.BACKEND_URL}/api/products/${id}?populate=*`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwt}`,
+          },
+        });
+      const category = await response.json();
+
+      return category.data;
+      
+  } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch category data.');
+  }
+
+}
+
+
+export async function fetchCategory(queryStr:string,pageNo:number,pageSize:number) {
+
+  const session = await auth();
+  const jwt = session?.user?.id;
+
+  if (!jwt) {
+    throw new Error('JWT is missing or invalid. Authorization failed.');
+  }
+
+  const query = qs.stringify({
+    query:queryStr,
+    limit:pageSize,
+    start:(pageNo-1)*pageSize,
+  });
+
+  try {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/category/search?${query}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+    const category = await response.json();
+
+    if (!response.ok) {
+      throw new Error(`API responded with status ${response.status}: ${category.message}`);
+    }
+
+    return category
+
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch category data.');
+  }
+
+}
+
+export async function fetchCategoryTotalPage(queryStr:string,pageSize:number) {
+
+  const session = await auth();
+  const jwt = session?.user?.id;
+
+  if (!jwt) {
+    throw new Error('JWT is missing or invalid. Authorization failed.');
+  }
+
+  const query = qs.stringify({
+    query:queryStr
+  });
+
+  try {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/category/search?${query}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+    
+    if (!response.ok) {
+      throw new Error(`API error`);
+    }
+
+    const totalItems = await response.json();
+    const totalPages = Math.ceil(Number(totalItems) / pageSize);
+    return {
+      totalPages: totalPages,
+      totalItems: totalItems
+    };
+    
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch category data.');
+  }
+}
+
+//Product
+
+export async function fetchProductById(id:string) {
+
+  const session = await auth();
+  const jwt = session?.user?.id;
+
+  if (!jwt) {
+    throw new Error('JWT is missing or invalid. Authorization failed.');
+  }
+
+  try {
+      const response = await fetch(`${process.env.BACKEND_URL}/api/products/${id}?populate=*`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwt}`,
+          },
+        });
+      const product = await response.json();
+
+      return product.data;
+      
+  } catch (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch product data.');
+  }
+
+}
+
+
+export async function fetchProduct(queryStr:string,pageNo:number,pageSize:number) {
+
+  const session = await auth();
+  const jwt = session?.user?.id;
+
+  if (!jwt) {
+    throw new Error('JWT is missing or invalid. Authorization failed.');
+  }
+
+  const query = qs.stringify({
+    query:queryStr,
+    limit:pageSize,
+    start:(pageNo-1)*pageSize,
+  });
+
+  try {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/product/search?${query}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+    const product = await response.json();
+
+    if (!response.ok) {
+      throw new Error(`API responded with status ${response.status}: ${product.message}`);
+    }
+
+    return product
+
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch product data.');
+  }
+
+}
+
+export async function fetchProductTotalPage(queryStr:string,pageSize:number) {
+
+  const session = await auth();
+  const jwt = session?.user?.id;
+
+  if (!jwt) {
+    throw new Error('JWT is missing or invalid. Authorization failed.');
+  }
+
+  const query = qs.stringify({
+    query:queryStr
+  });
+
+  try {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/product/search?${query}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+    
+    if (!response.ok) {
+      throw new Error(`API error`);
+    }
+
+    const totalItems = await response.json();
+    const totalPages = Math.ceil(Number(totalItems) / pageSize);
+    return {
+      totalPages: totalPages,
+      totalItems: totalItems
+    };
+    
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch category data.');
   }
 }

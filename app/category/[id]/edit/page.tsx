@@ -8,28 +8,28 @@ import { Breadcrumb, Card,Button,
 import Image from "next/image";
 import Link from "next/link";
 import { HiHome,HiCloudUpload } from "react-icons/hi";
-import { fetchBrandById } from '@/app/lib/data';
+import { fetchCategoryById } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
 import { ChgImgBtn } from '@/app/ui/trainee/chgImgBtn';
 import {CreateContactBtn} from '@/app/ui/trainee/addContactBtn';
 import {DeleteGuardianBtn} from '@/app/ui/trainee/deleteGuardianBtn';
-import { updateBrand } from '@/app/lib/actions';
+import { updateCategory } from '@/app/lib/actions';
 
 export default async function Page(
     props: { params: Promise<{ id: string }>, searchParams?: Promise<{done?:boolean;}> }
 ) {
     const searchParams = await props.searchParams;
     const params = await props.params;
-    const i18n = await getTranslations('brand');
+    const i18n = await getTranslations('category');
     const id = params.id;
     const done = searchParams?.done || null;
-    const [brand] = await Promise.all([fetchBrandById(id)]);
+    const [category] = await Promise.all([fetchCategoryById(id)]);
 
-    if (!brand) {
+    if (!category) {
         notFound();
     }
 
-    const updateBrandWithId = updateBrand.bind(null, id);
+    const updateCategoryWithId = updateCategory.bind(null, id);
 
     return (
         <main>
@@ -42,11 +42,11 @@ export default async function Page(
                         <Link href="/"><span className="dark:text-white">{i18n('main')}</span></Link>
                         </div>
                     </Breadcrumb.Item>
-                    <Breadcrumb.Item ><Link href="/brand">{i18n('brand')}</Link></Breadcrumb.Item>
+                    <Breadcrumb.Item ><Link href="/category">{i18n('category')}</Link></Breadcrumb.Item>
                     <Breadcrumb.Item>{i18n('setting')}</Breadcrumb.Item>
                 </Breadcrumb>
                 <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-                    {i18n('brand')} {i18n('setting')}
+                    {i18n('category')} {i18n('setting')}
                 </h1>
             </div>
 
@@ -56,19 +56,19 @@ export default async function Page(
                 <h3 className="mb-4 text-xl font-bold dark:text-white">
                 {i18n('info')}
                 </h3>
-                <form action={updateBrandWithId}>
+                <form action={updateCategoryWithId}>
                 <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-6 grid grid-cols-1 gap-y-2 sm:col-span-3">
                     <Label htmlFor="namev">{i18n('name')}</Label>
                     <TextInput
                         id="name"
                         name="name"
-                        defaultValue={brand.name}
+                        defaultValue={category.name}
                     />
                     </div>
                     <div className="col-span-6 grid grid-cols-1 gap-y-2 sm:col-span-3">
                     <Label htmlFor="status">{i18n('status')}</Label>
-                    <Select id="status" name="status" defaultValue={brand.brand_status} >
+                    <Select id="status" name="status" defaultValue={category.category_status} >
                         <option key={"T"} value='true'>{i18n('available')}</option>
                         <option key={"F"} value='false'>{i18n('unavailable')}</option>
                     </Select>
