@@ -1,13 +1,13 @@
 "use client"
 import { FileInput, Label, Button, TextInput, Modal, Table, Select } from "flowbite-react";
 import { useEffect,useState } from "react";
-import { createProduct, FormState } from '@/app/lib/actions';
+import { createOrder, FormState } from '@/app/lib/actions';
 import {useTranslations, useLocale} from 'next-intl';
 import { useActionState } from 'react';
 import { useSession } from "next-auth/react"
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 
-export function CreateProductBtn() {
+export function CreateOrderBtn() {
   const { status, data: session } = useSession()
   const { } = session || {};
 
@@ -15,19 +15,15 @@ export function CreateProductBtn() {
         img: false,
       });
     const [openModal, setOpenModal] = useState(false);
-    const i18n = useTranslations('product');
+    const i18n = useTranslations('order');
     const initialState: FormState = { message: null };
-    const [state, formAction, isPending] = useActionState(createProduct, initialState);
-    const locale = useLocale();
-    const pathname = usePathname();
-    const { replace } = useRouter();
+    const [state, formAction, isPending] = useActionState(createOrder, initialState);
     const closeModal = () => {
         setOpenModal(false);
     };
     useEffect(() => {
       if (state && state?.message=='success') {
-        replace(`${pathname}/${state?.payload?.get("pid")}/edit`);
-        //closeModal()
+        closeModal()
       }
     }, [state]); 
     return (

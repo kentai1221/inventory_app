@@ -82,8 +82,29 @@ export type Product = {
   category: Category;
   image: any;
   product_status: boolean;
+  code: string;
 }
 
+export type Order = {
+  documentId: string;
+  name: string;
+  contact: string;
+  amount: number;
+  order_date: string;
+  payment_type: string;
+  payment_date: string;
+  payment_status: boolean;
+  order_products: Order_product[];
+}
+
+export type Order_product = {
+  documentId: string;
+  product: Product;
+  order: Order;
+  quantity: number;
+  price: number;
+  total: number;
+}
 
 export type Revenue = {
   month: string;

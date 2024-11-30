@@ -17,7 +17,7 @@ export default async function ProductTable({
 }) {
   const [product] = await Promise.all([fetchProduct(queryStr,pageNo,pageSize)]);
   const i18n = await getTranslations('product');
-  
+ 
   return (
     <div className="flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -32,15 +32,29 @@ export default async function ProductTable({
                   <div>
                     <div className="mb-2 flex items-center dark:text-white">
                       <div className="h-20 w-20 relative overflow-hidden bg-gray-100 dark:bg-gray-600" data-testid="flowbite-avatar-img">
-                        <Image
-                          alt=""
-                          height={100}
-                          src={b.image?.url?`${process.env.BACKEND_URL}${b.image.url}`:`/user.png`}
-                          width={100}
-                          className="mb-4 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0"
-                        />
+                        <div
+                            style={{
+                                display: 'grid',
+                                gridGap: '8px',
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 80px))',
+                            }}
+                            >
+                            <div style={{ position: 'relative', height: '80px' }}>
+                                <Image
+                                alt={b.name}
+                                src={b.image?.[0].url?`${process.env.BACKEND_URL}${b.image[0].url}`:`/product.png`}
+                                fill
+                                style={{
+                                    objectFit: 'contain',
+                                }}
+                                />
+                            </div>
+                        </div>
                       </div>
-                      <p className='ml-2'>{b.name}</p>
+                      <div className="ml-2 flex flex-col">
+                        <p>{b.name}</p>
+                        <p>{b.code?`#${b.code}`:``}</p>
+                      </div>
                     </div>
                   </div>
                   {b.product_status? <Badge color="success">{i18n('available')}</Badge>:<Badge color="failure">{i18n('unavailable')}</Badge>}
@@ -65,13 +79,13 @@ export default async function ProductTable({
                       <p>{i18n('brand')}</p>
                   </div>
                   <div className="flex w-full items-center justify-between ml-4 pt-4 dark:text-white">
-                      <p>{b.brand.name}</p>
+                      <p>{b.brand?.name}</p>
                   </div>
                   <div className="flex w-full items-center justify-center mt-4 p-2 rounded-lg bg-gray-200 dark:bg-gray-700 dark:text-white">
                       <p>{i18n('category')}</p>
                   </div>
                   <div className="flex w-full items-center justify-between ml-4 pt-4 dark:text-white">
-                      <p>{b.category.name}</p>
+                      <p>{b.category?.name}</p>
                   </div>
                 </div>
                 <div className="flex w-full items-center justify-between pt-6 dark:text-white">
@@ -88,6 +102,9 @@ export default async function ProductTable({
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6 dark:text-white">
                   {i18n('name')}
+                </th>
+                <th scope="col" className="px-4 py-5 font-medium sm:pl-6 dark:text-white">
+                  {i18n('code')}
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium dark:text-white">
                   {i18n('quantity')}
@@ -118,15 +135,31 @@ export default async function ProductTable({
                   <td className="w-1/5 whitespace-nowrap py-3 pl-6 pr-3 text-gray-900 dark:text-white">
                     <div className="flex items-center gap-3">
                       <div className="h-20 w-20 relative overflow-hidden bg-gray-100 dark:bg-gray-600" data-testid="flowbite-avatar-img">
-                        <Image
-                          alt=""
-                          height={100}
-                          src={b.image?.url?`${process.env.BACKEND_URL}${b.image.url}`:`/user.png`}
-                          width={100}
-                          className="mb-4 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0"
-                        />
+                        <div
+                            style={{
+                                display: 'grid',
+                                gridGap: '8px',
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 80px))',
+                            }}
+                            >
+                            <div style={{ position: 'relative', height: '80px' }}>
+                                <Image
+                                alt={b.name}
+                                src={b.image?.[0].url?`${process.env.BACKEND_URL}${b.image[0].url}`:`/product.png`}
+                                fill
+                                style={{
+                                    objectFit: 'contain',
+                                }}
+                                />
+                            </div>
+                        </div>
                       </div>
                       <p>{b.name}</p>
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap py-3 px-3 text-gray-900 dark:text-white">
+                    <div className="flex items-center gap-3">
+                      <p>{b.code?`#${b.code}`:``}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap py-3 px-3 text-gray-900 dark:text-white">
@@ -141,12 +174,12 @@ export default async function ProductTable({
                   </td>
                   <td className="whitespace-nowrap py-3 px-3 text-gray-900 dark:text-white">
                     <div className="flex items-center gap-3">
-                      <p>{b.brand.name}</p>
+                      <p>{b.brand?.name}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap py-3 px-3 text-gray-900 dark:text-white">
                     <div className="flex items-center gap-3">
-                      <p>{b.category.name}</p>
+                      <p>{b.category?.name}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap py-3 px-3 text-gray-900 dark:text-white">
