@@ -164,11 +164,10 @@
         "chart3_desc":"No. of order each month in 2024",
         "chart4":"Inventory",
         "chart4_desc":"Existing product quantity ratio",
-        "chart1_item1":"Item 1",
-        "chart1_item2":"Item 2",
+        "chart1_item1":"Sales HKD",
         "chart2_item1":"Cash",
         "chart2_item2":"Credit Card",
-        "chart3_item":"Name of item",
+        "chart3_item":"Quantity",
         "table":"Record",
         "view_all":"View all",
         "report":"Report"

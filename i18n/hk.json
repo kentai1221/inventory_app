@@ -164,11 +164,10 @@
         "chart3_desc":"2024年按月訂單總數",
         "chart4":"庫存",
         "chart4_desc":"現有的產品數量比例",
-        "chart1_item1":"項目1",
-        "chart1_item2":"項目2",
+        "chart1_item1":"銷售額 HKD",
         "chart2_item1":"現金",
         "chart2_item2":"信用卡",
-        "chart3_item":"項目名稱",
+        "chart3_item":"數量",
         "table":"記錄",
         "view_all":"查看全部",
         "report":"檢視報表"
