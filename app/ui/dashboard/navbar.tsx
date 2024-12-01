@@ -50,8 +50,6 @@ export function DashboardNavbar() {
     }
   }
 
-  //console.log(session?.user)
-
   const { user: { session_expiry: sessionExpiry = null } = {} } = session || {};
 
   useEffect(() => {
@@ -88,14 +86,6 @@ export function DashboardNavbar() {
               </div>
             </button>
             <Navbar.Brand as={Link} href="/" className="mr-14">
-              {/* <Image
-                className="mr-3 h-8"
-                alt=""
-                src="/polyu_logo.png"
-                width={32}
-                height={32}
-              /> */}
-              
               <span className="lg:hidden self-center whitespace-nowrap text-xl font-semibold dark:text-white">
               {i18n('title_mobile')}
               </span>
@@ -103,29 +93,11 @@ export function DashboardNavbar() {
               {i18n('title')}
               </span>
             </Navbar.Brand>
-            {/* <form className="hidden lg:block lg:pl-2">
-              <Label htmlFor="search" className="sr-only">
-                Search
-              </Label>
-              <TextInput
-                className="w-full lg:w-96"
-                icon={HiSearch}
-                id="search"
-                name="search"
-                placeholder="Search"
-                required
-                type="search"
-              />
-            </form> */}
+
           </div>
           <div className="flex items-center lg:gap-3">
             <div className="flex items-center">
-              {/* <button className="cursor-pointer rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 lg:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:bg-gray-700 dark:focus:ring-gray-700">
-                <span className="sr-only">Search</span>
-                <HiSearch className="h-6 w-6" />
-              </button> */}
               <NotificationBellDropdown />
-              {/* <AppDrawerDropdown /> */}
               <LanguageDropdown />
               <div className="hidden dark:block">
                 <Tooltip content={i18n('light_mode')} className="text-white">
