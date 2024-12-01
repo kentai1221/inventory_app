@@ -2,17 +2,12 @@ import {getTranslations} from 'next-intl/server';
 import { Breadcrumb, Card,Button,
     Label,
     Select,
-    TextInput,
-    Textarea,
-    ToggleSwitch, } from "flowbite-react";
-import Image from "next/image";
+    TextInput
+} from "flowbite-react";
 import Link from "next/link";
-import { HiHome,HiCloudUpload } from "react-icons/hi";
+import { HiHome } from "react-icons/hi";
 import { fetchBrandById } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
-import { ChgImgBtn } from '@/app/ui/trainee/chgImgBtn';
-import {CreateContactBtn} from '@/app/ui/trainee/addContactBtn';
-import {DeleteGuardianBtn} from '@/app/ui/trainee/deleteGuardianBtn';
 import { updateBrand } from '@/app/lib/actions';
 
 export default async function Page(
@@ -84,7 +79,6 @@ export default async function Page(
             </Card>
             </div>
             </div>
-            {/* <Form trainee={trainee} customers={customers} /> */}
         </div>
         </main>
     );

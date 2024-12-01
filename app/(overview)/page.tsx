@@ -1,4 +1,3 @@
-import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
 import FirstApexChart from '@/app/ui/dashboard/firstApexChart';
 import SecondApexChart from '@/app/ui/dashboard/secondApexChart';
 import ThridApexChart from '@/app/ui/dashboard/thridApexChart';

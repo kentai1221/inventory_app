@@ -3,7 +3,7 @@ import Pagination from '@/app/ui/pagination';
 import Search from '@/app/ui/search';
 import ProductTable from '@/app/ui/product/table';
 import {CreateProductBtn} from '@/app/ui/product/addProductBtn'
-import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
+import { TableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchProductTotalPage } from '@/app/lib/data';
 import Link from "next/link";
@@ -70,7 +70,7 @@ export default async function Page(
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden shadow">
-              <Suspense key={queryStr + pageNo} fallback={<InvoicesTableSkeleton />}>
+              <Suspense key={queryStr + pageNo} fallback={<TableSkeleton />}>
                 <ProductTable queryStr={queryStr} pageNo={pageNo} pageSize={pageSize} />
               </Suspense>
             </div>

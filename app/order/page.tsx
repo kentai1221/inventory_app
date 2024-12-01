@@ -3,7 +3,7 @@ import Pagination from '@/app/ui/pagination';
 import Search from '@/app/ui/search';
 import OrderTable from '@/app/ui/order/table';
 import {CreateOrderBtn} from '@/app/ui/order/addOrderBtn'
-import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
+import { TableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchOrderTotalPage } from '@/app/lib/data';
 import Link from "next/link";
@@ -71,7 +71,7 @@ export default async function Page(
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden shadow">
-              <Suspense key={queryStr + pageNo} fallback={<InvoicesTableSkeleton />}>
+              <Suspense key={queryStr + pageNo} fallback={<TableSkeleton />}>
                 <OrderTable queryStr={queryStr} pageNo={pageNo} pageSize={pageSize} />
               </Suspense>
             </div>

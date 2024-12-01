@@ -89,7 +89,7 @@ const FormSchema = z.object({
         .number()
         .gt(0, { message: 'Please enter an amount greater than $0.' }),
     status: z.enum(['pending', 'paid'], {
-        invalid_type_error: 'Please select an invoice status.',
+        invalid_type_error: 'Please select an status.',
     }),
     date: z.string(),
 });
@@ -108,155 +108,6 @@ export type FormState = {
     message?: string | null;
     payload?: FormData;
 };
-
-const CreateInvoice = FormSchema.omit({ id: true, date: true });
-
-export async function createInvoice(prevState: State, formData: FormData) {
-
-    const session = await auth();
-    const jwt = session?.user?.id;
-  
-    if (!jwt) {
-      throw new Error('JWT is missing or invalid. Authorization failed.');
-    }
-
-    // const rawFormData = {
-    //     customerId: formData.get('customerId'),
-    //     amount: formData.get('amount'),
-    //     status: formData.get('status'),
-    // };
-
-    const validatedFields = CreateInvoice.safeParse({
-        customerId: formData.get('customerId'),
-        amount: formData.get('amount'),
-        status: formData.get('status'),
-    });
-
-    if (!validatedFields.success) {
-        return {
-          errors: validatedFields.error.flatten().fieldErrors,
-          message: 'Missing Fields. Failed to Create Invoice.',
-          payload: formData,
-        };
-      }
-
-    const { customerId, amount, status } = validatedFields.data;
-    const date = new Date().toISOString().split('T')[0];
-
-    let response = await fetch(`${process.env.BACKEND_URL}/api/invoices`, {
-        method: 'POST',
-        body: JSON.stringify({
-            'data': {
-                customer:{
-                    id:customerId,
-                },
-                amount:amount,
-                invoice_status:status,
-                date:(new Date().toISOString()).toString(),
-            }
-        }),
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: `Bearer ${jwt}`,
-        }
-    })
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    let data;
-    try {
-        data = await response.json();
-    } catch (error) {
-        throw new Error('Failed to parse JSON response: ' + error);
-    }
-    
-    revalidatePath('/invoices');
-    redirect('/invoices');
-
-    // Loop all form data
-    //   for (const pair of formData.entries()) {
-    //     console.log(pair[0], pair[1]);
-    //   }
-    
-    //console.log(rawFormData);
-}
-
-export async function updateInvoice(id: string, formData: FormData) {
-
-    const session = await auth();
-    const jwt = session?.user?.id;
-  
-    if (!jwt) {
-      throw new Error('JWT is missing or invalid. Authorization failed.');
-    }
-
-
-    let response = await fetch(`${process.env.BACKEND_URL}/api/invoices/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-            'data': {
-                customer:{
-                    id:formData.get('customerId'),
-                },
-                amount:Number(formData.get('amount')),
-                invoice_status:formData.get('status'),
-            }
-        }),
-        headers: {
-            'Content-type': 'application/json',
-            Authorization: `Bearer ${jwt}`,
-        }
-    })
-
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    let data;
-    try {
-        data = await response.json();
-    } catch (error) {
-        throw new Error('Failed to parse JSON response: ' + error);
-    }
-
-    revalidatePath('/invoices');
-    redirect('/invoices');
-}
-
-
-export async function deleteInvoice(id: string) {
-
-    const session = await auth();
-    const jwt = session?.user?.id;
-  
-    if (!jwt) {
-      throw new Error('JWT is missing or invalid. Authorization failed.');
-    }
-
-    
-    //throw new Error('Failed to Delete Invoice');
-    
-    try {
-        let response = await fetch(`${process.env.BACKEND_URL}/api/invoices/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json',
-                Authorization: `Bearer ${jwt}`,
-            }
-        })
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-    } catch (error) {
-        return { message: 'Failed to Delete Invoice.' };
-    }
-
-    revalidatePath('/invoices');
-}
 
 export async function modifyPhoto(prevState: State, formData: FormData) {
     
@@ -505,7 +356,6 @@ export async function updateBrand(id: string, formData: FormData) : Promise<{
         throw new Error('Failed to parse JSON response: ' + error);
     }
 
-    //revalidatePath(`/trainee/${id}/edit`);
     redirect(`/brand/${id}/edit?done=1`);
 }
 
@@ -647,7 +497,6 @@ export async function updateCategory(id: string, formData: FormData) : Promise<{
         throw new Error('Failed to parse JSON response: ' + error);
     }
 
-    //revalidatePath(`/trainee/${id}/edit`);
     redirect(`/category/${id}/edit?done=1`);
 }
 

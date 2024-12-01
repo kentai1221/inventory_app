@@ -4,7 +4,7 @@ import Search from '@/app/ui/search';
 import BrandTable from '@/app/ui/brand/table';
 import { CreateButton,ExportButton } from '@/app/ui/button';
 import {CreateBrandBtn} from '@/app/ui/brand/addBrandBtn'
-import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
+import { TableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchBrandTotalPage } from '@/app/lib/data';
 import Link from "next/link";
@@ -71,7 +71,7 @@ export default async function Page(
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden shadow">
-              <Suspense key={queryStr + pageNo} fallback={<InvoicesTableSkeleton />}>
+              <Suspense key={queryStr + pageNo} fallback={<TableSkeleton />}>
                 <BrandTable queryStr={queryStr} pageNo={pageNo} pageSize={pageSize} />
               </Suspense>
             </div>

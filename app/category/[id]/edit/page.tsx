@@ -3,16 +3,12 @@ import { Breadcrumb, Card,Button,
     Label,
     Select,
     TextInput,
-    Textarea,
-    ToggleSwitch, } from "flowbite-react";
+} from "flowbite-react";
 import Image from "next/image";
 import Link from "next/link";
-import { HiHome,HiCloudUpload } from "react-icons/hi";
+import { HiHome } from "react-icons/hi";
 import { fetchCategoryById } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
-import { ChgImgBtn } from '@/app/ui/trainee/chgImgBtn';
-import {CreateContactBtn} from '@/app/ui/trainee/addContactBtn';
-import {DeleteGuardianBtn} from '@/app/ui/trainee/deleteGuardianBtn';
 import { updateCategory } from '@/app/lib/actions';
 
 export default async function Page(
@@ -84,7 +80,6 @@ export default async function Page(
             </Card>
             </div>
             </div>
-            {/* <Form trainee={trainee} customers={customers} /> */}
         </div>
         </main>
     );
