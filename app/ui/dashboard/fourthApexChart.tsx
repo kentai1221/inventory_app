@@ -3,7 +3,7 @@ import { Badge, Dropdown, Table, useThemeMode } from "flowbite-react";
 import ApexChart from "@/app/ui/chart";
 import {useTranslations} from 'next-intl';
 
-export default function FourthApexChart(){
+export default function FourthApexChart(inventory: any){
 
     const { mode } = useThemeMode();
     const isDarkTheme = mode === "dark";
@@ -13,54 +13,22 @@ export default function FourthApexChart(){
     const opacityTo = isDarkTheme ? 0.15 : 0;
     const i18n = useTranslations('mainpage');
 
-    const data = {
-        "labels": [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul"
-        ],
-        "series": [30, 24, 18, 12, 9, 7],
-        "topChannels": [
-          {
-            "channel": "Organic Search",
-            "users": 5649,
-            "acquisition": 0.3
-          },
-          {
-            "channel": "Referral",
-            "users": 4025,
-            "acquisition": 0.24
-          },
-          {
-            "channel": "Direct",
-            "users": 3105,
-            "acquisition": 0.18
-          },
-          {
-            "channel": "Social",
-            "users": 1251,
-            "acquisition": 0.12
-          },
-          {
-            "channel": "Other",
-            "users": 734,
-            "acquisition": 0.09
-          },
-          {
-            "channel": "Email",
-            "users": 456,
-            "acquisition": 0.07
-          }
-        ]
-    }
+    const data = inventory.data
 
     const options: ApexCharts.ApexOptions = {
       labels: data.labels,
-      colors: ["#16BDCA", "#FDBA8C", "#1A56DB", "#D61F69", "#9061F9", "#6875F5"],
+      colors: [
+        "#16BDCA", // Teal
+        "#FDBA8C", // Peach
+        "#1A56DB", // Blue
+        "#D61F69", // Red
+        "#9061F9", // Purple
+        "#6875F5", // Light Blue
+        "#34D399", // Green
+        "#FBBF24", // Yellow
+        "#F87171", // Light Red
+        "#4ADE80"  // Light Green
+      ],
       chart: {
         fontFamily: "Inter, sans-serif",
         toolbar: {
@@ -113,7 +81,7 @@ export default function FourthApexChart(){
 
     return (
 
-        <div className="rounded-lg bg-white p-4 shadow sm:p-6 xl:p-8 dark:bg-gray-800">
+        <div className="mb-4 rounded-lg bg-white p-4 shadow sm:p-6 xl:p-8 dark:bg-gray-800">
         <div className="flex items-center">
           <div className="shrink-0">
             <span className="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">
@@ -123,21 +91,6 @@ export default function FourthApexChart(){
               {i18n('chart4_desc')}
             </h3>
           </div>
-          {/* <div className="flex flex-1 items-center justify-end text-base font-bold text-green-500 dark:text-green-400">
-            0%
-            <svg
-              className="h-5 w-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div> */}
         </div>
         <ApexChart height={305} options={options} series={data.series} type="donut" />
       </div>

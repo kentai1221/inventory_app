@@ -3,7 +3,7 @@ import { Badge, Dropdown, Table, useThemeMode } from "flowbite-react";
 import ApexChart from "@/app/ui/chart";
 import {useTranslations} from 'next-intl';
 
-export default function FirstApexChart(){
+export default function FirstApexChart(sales: any){
 
     const { mode } = useThemeMode();
     const isDarkTheme = mode === "dark";
@@ -21,18 +21,18 @@ export default function FirstApexChart(){
             "Apr",
             "May",
             "Jun",
-            "Jul"
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
         ],
         "series": [
             {
             "name": i18n('chart1_item1'),
-            "data": [500, 400, 300, 400, 500, 400, 500],
+            "data": sales.data,
             "color": "#1A56DB"
-            },
-            {
-            "name": i18n('chart1_item2'),
-            "data": [550, 450, 350, 400, 300, 300, 150],
-            "color": "#FDBA8C"
             }
         ]
     }
@@ -157,21 +157,6 @@ export default function FirstApexChart(){
               {i18n('chart1_desc')}
             </h3>
           </div>
-          {/* <div className="flex flex-1 items-center justify-end text-base font-bold text-green-500 dark:text-green-400">
-            0%
-            <svg
-              className="h-5 w-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div> */}
         </div>
         <ApexChart height={420} options={options} series={data.series} type="area" />
       </div>

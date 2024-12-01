@@ -3,42 +3,29 @@ import { Badge, Dropdown, Table, useThemeMode } from "flowbite-react";
 import ApexChart from "@/app/ui/chart";
 import {useTranslations} from 'next-intl';
 
-export default function SecondApexChart(){
-
-    const { mode } = useThemeMode();
-    const isDarkTheme = mode === "dark";
-    const fillGradientShade = isDarkTheme ? "dark" : "light";
-    const fillGradientShadeIntensity = isDarkTheme ? 0.45 : 1;
-
+export default function SecondApexChart(payments: any){
     const i18n = useTranslations('mainpage');
-
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const transformedCash = payments.data.map((value: { cash: number; card: number }, index: number) => ({
+      x: months[index],
+      y: value.cash
+    }));
+    const transformedCard = payments.data.map((value: { cash: number; card: number }, index: number) => ({
+      x: months[index],
+      y: value.card
+    }));
+    
     const data = {
         "series": [
             {
-              "name": i18n('chart2_item'),
+              "name": i18n('chart2_item1'),
               "color": "#1A56DB",
-              "data": [
-                { "x": "A1", "y": 170 },
-                { "x": "A2", "y": 180 },
-                { "x": "A3", "y": 164 },
-                { "x": "A4", "y": 145 },
-                { "x": "A5", "y": 174 },
-                { "x": "A6", "y": 170 },
-                { "x": "A7", "y": 155 }
-              ]
+              "data": transformedCash
             },
             {
-              "name": i18n('chart2_item'),
+              "name": i18n('chart2_item2'),
               "color": "#FDBA8C",
-              "data": [
-                { "x": "A1", "y": 120 },
-                { "x": "A2", "y": 134 },
-                { "x": "A3", "y": 167 },
-                { "x": "A4", "y": 179 },
-                { "x": "A5", "y": 145 },
-                { "x": "A6", "y": 182 },
-                { "x": "A7", "y": 143 }
-              ]
+              "data": transformedCard
             },
         ]
     }
@@ -110,7 +97,7 @@ export default function SecondApexChart(){
 
     return (
 
-        <div className="rounded-lg bg-white p-4 shadow sm:p-6 xl:p-8 dark:bg-gray-800">
+        <div className="mb-4 rounded-lg bg-white p-4 shadow sm:p-6 xl:p-8 dark:bg-gray-800">
         <div className="flex items-center">
           <div className="shrink-0">
             <span className="text-2xl font-bold leading-none text-gray-900 sm:text-3xl dark:text-white">
@@ -120,21 +107,6 @@ export default function SecondApexChart(){
               {i18n('chart2_desc')}
             </h3>
           </div>
-          {/* <div className="flex flex-1 items-center justify-end text-base font-bold text-green-500 dark:text-green-400">
-            0%
-            <svg
-              className="h-5 w-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div> */}
         </div>
         <ApexChart height={305} options={options} series={data.series} type="bar" />
       </div>

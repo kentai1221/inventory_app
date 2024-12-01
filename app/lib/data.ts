@@ -113,41 +113,6 @@ export async function fetchCustomers() {
 
 }
 
-export async function fetchRevenue() {
-
-  const session = await auth();
-  const jwt = session?.user?.id;
-
-  if (!jwt) {
-    throw new Error('JWT is missing or invalid. Authorization failed.');
-  }
-  
-  try {
-    const response = await fetch(`${process.env.BACKEND_URL}/api/revenues`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-    const json = await response.json();
-
-    if (!response.ok) {
-      throw new Error(`API responded with status ${response.status}: ${json.message}`);
-    }
-
-    //console.log('Fetching revenue data...');
-    //await new Promise((resolve) => setTimeout(resolve, 3000)); //Delay
-    return json.data
-
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch revenue data.');
-  }
-
-}
-
 export async function fetchLatestInvoices(){
 
   const session = await auth();
@@ -847,7 +812,6 @@ export async function fetchProducts() {
 
 
 //Order
-
 export async function fetchOrderById(id:string) {
 
   const session = await auth();
@@ -857,8 +821,18 @@ export async function fetchOrderById(id:string) {
     throw new Error('JWT is missing or invalid. Authorization failed.');
   }
 
+  const query = qs.stringify({
+    populate: {
+      "order_products": {
+        populate:{
+          product:true
+        }
+      }
+    }
+  });
+
   try {
-      const response = await fetch(`${process.env.BACKEND_URL}/api/products/${id}?populate=*`,
+      const response = await fetch(`${process.env.BACKEND_URL}/api/orders/${id}?${query}`,
         {
           method: 'GET',
           headers: {
@@ -955,4 +929,37 @@ export async function fetchOrderTotalPage(queryStr:string,pageSize:number) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch order data.');
   }
+}
+
+export async function fetchData() {
+
+  const session = await auth();
+  const jwt = session?.user?.id;
+
+  if (!jwt) {
+    throw new Error('JWT is missing or invalid. Authorization failed.');
+  }
+  
+  try {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/order/reports`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+    const json = await response.json();
+
+    if (!response.ok) {
+      throw new Error(`API responded with status ${response.status}: ${json.message}`);
+    }
+
+    return json
+
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch revenue data.');
+  }
+
 }

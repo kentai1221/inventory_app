@@ -862,68 +862,189 @@ export async function createOrder(prevState: State, formData: FormData): Promise
     message: string;
     payload?: FormData;
     error?: string;
-}> {
-    
+  }> {
     const session = await auth();
     const jwt = session?.user?.id;
-   
+  
     if (!jwt) {
+      return {
+        message: 'failed',
+        error: 'JWT is missing or invalid',
+      };
+    }
+  
+    const name = formData.get("name");
+    const contact = formData.get("contact");
+    const order_date = formData.get("order_date");
+    const payment_type = formData.get("payment_type");
+    const status = formData.get("status");
+    const productRows = formData.get("productRows");
+    const amount = formData.get("order_total");
+    
+  
+    if (!name || !contact || !order_date || !payment_type || !status || !productRows) {
         return {
-            message: 'failed',
-            error: 'JWT is missing or invalid',
+            message: "failed",
+            error: "Form data validation failed",
         };
     }
-
-    const name = formData?.get('name');
-    const status = formData?.get('status');
-
-    if (!name || !status) {
-        return {
-            message: 'failed',
-            error: 'Form data validation failed',
-        };
-    }
-
+  
+    // Parse product rows back into an array
+    let products;
     try {
-       
-        const response = await fetch(`${process.env.BACKEND_URL}/api/categories`, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${jwt}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                data: {
-                    name: name,
-                    "order_status":status=="false"?false:true
-                },
-            }),
-        });
+      products = JSON.parse(productRows.toString());
+    } catch (err) {
+      return {
+        message: 'failed',
+        error: 'Failed to parse product data',
+      };
+    }
+  
+    try {
+      const response = await fetch(`${process.env.BACKEND_URL}/api/orders`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            name,
+            contact,
+            order_date,
+            payment_type,
+            amount,
+            payment_status: status === "false" ? false : true,
+          },
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorDetails = await response.text();
+        return {
+          message: 'failed',
+          payload: formData,
+          error: errorDetails,
+        };
+      }
+      const res = await response.json();
 
-        if (!response.ok) {
-            const errorDetails = await response.text();
+      products.forEach(async (row:any) => {
+        
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/order-products`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    data: {
+                        product:{
+                            connect: [row.productId],
+                        },
+                        order: {
+                            connect: [res.data.documentId],
+                        },
+                        quantity:Number(row.quantity),
+                        price:Number(row.price),
+                        total:(Number(row.price)*Number(row.quantity))
+                    },
+                }),
+            });
+
+            if (!response.ok) {
+                const errorDetails = await response.text();
+                return {
+                    message: `failed`,
+                    payload: formData,
+                    error: errorDetails,
+                };
+            }
+        } catch (error: any) {
             return {
-                message: `failed`,
-                payload: formData,
-                error: errorDetails,
+                message: 'failed',
+                error: error.message,
             };
         }
 
-        revalidatePath(`/order`);
-        return {
-            message: 'success',
-            payload: formData,
-        };
+        try {
+            // Fetch the current product details to get the quantity
+            const productResponse = await fetch(
+              `${process.env.BACKEND_URL}/api/products/${row.productId}`,
+              {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${jwt}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+        
+            if (!productResponse.ok) {
+              const errorDetails = await productResponse.text();
+              return {
+                message: `failed`,
+                payload: formData,
+                error: `Failed to fetch product details: ${errorDetails}`,
+              };
+            }
+        
+            const productData = await productResponse.json();
+            const currentQuantity = productData.data.quantity;
+            
+            // Perform the subtraction
+            const updatedQuantity = currentQuantity - Number(row.quantity);
+        
+            // Update the product quantity
+            const updateResponse = await fetch(
+              `${process.env.BACKEND_URL}/api/products/${row.productId}`,
+              {
+                method: "PUT",
+                headers: {
+                  Authorization: `Bearer ${jwt}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  data: {
+                    quantity: updatedQuantity,
+                  },
+                }),
+              }
+            );
+
+            if (!updateResponse.ok) {
+              const errorDetails = await updateResponse.text();
+              console.log(errorDetails)
+              return {
+                message: `failed`,
+                payload: formData,
+                error: `Failed to update product quantity: ${errorDetails}`,
+              };
+            }
+          } catch (error: any) {
+            return {
+              message: "failed",
+              error: error.message,
+            };
+          }
+
+      });
+
+      formData.set('oid',res.data.documentId);
+      return {
+        message: 'success',
+        payload: formData,
+      };
     } catch (error: any) {
-        return {
-            message: 'failed',
-            error: error.message,
-        };
+      return {
+        message: 'failed',
+        error: error.message,
+      };
     }
-}
-
-
-export async function updateOrder(id: string, formData: FormData) : Promise<{
+  }
+  
+export async function updateOrder(prevState: State, formData: FormData) : Promise<{
     message: string;
     payload?: FormData;
     error?: string;
@@ -933,16 +1054,21 @@ export async function updateOrder(id: string, formData: FormData) : Promise<{
     const jwt = session?.user?.id;
   
     if (!jwt) {
-      throw new Error('JWT is missing or invalid. Authorization failed.');
+        return {
+            message: 'failed',
+            payload: formData,
+        };
     }
 
-
-    let response = await fetch(`${process.env.BACKEND_URL}/api/categories/${id}`, {
+    const id = formData.get('id');
+    let response = await fetch(`${process.env.BACKEND_URL}/api/orders/${id}`, {
         method: 'PUT',
         body: JSON.stringify({
             'data': {
                 'name':formData.get('name'),
-                'order_status':formData.get('status')
+                'contact':formData.get('contact'),
+                'payment_type':formData.get('payment_type'),
+                'payment_status':formData.get('status')
             }
         }),
         headers: {
@@ -953,19 +1079,26 @@ export async function updateOrder(id: string, formData: FormData) : Promise<{
 
     if (!response.ok) {
         const errorDetails = await response.text();
-         console.log(errorDetails)
-        throw new Error(`HTTP error! status: ${response.status}`);
+        return {
+            message: 'failed',
+            payload: formData,
+        };
     }
     
     let data;
     try {
         data = await response.json();
     } catch (error) {
-        throw new Error('Failed to parse JSON response: ' + error);
+        return {
+            message: 'failed',
+            payload: formData,
+        };
     }
+    revalidatePath(`/order/${id}/edit`);
 
-    //revalidatePath(`/trainee/${id}/edit`);
-    redirect(`/order/${id}/edit?done=1`);
+    return {
+        message: 'success',
+    };
 }
 
 export async function deleteOrder(id: string) {
@@ -979,7 +1112,7 @@ export async function deleteOrder(id: string) {
 
    
     try {
-        let response = await fetch(`${process.env.BACKEND_URL}/api/categories/${id}`, {
+        let response = await fetch(`${process.env.BACKEND_URL}/api/orders/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json',

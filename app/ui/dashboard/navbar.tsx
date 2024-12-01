@@ -100,7 +100,7 @@ export function DashboardNavbar() {
               {i18n('title_mobile')}
               </span>
               <span className="hidden lg:block self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-              {i18n('title')} - {locale=="en"?session?.user?.branches[0]?.name_en:session?.user?.branches[0]?.name} 
+              {i18n('title')}
               </span>
             </Navbar.Brand>
             {/* <form className="hidden lg:block lg:pl-2">

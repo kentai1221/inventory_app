@@ -74,6 +74,7 @@ export type Category = {
 }
 
 export type Product = {
+  total: string | number | readonly string[] | undefined;
   documentId: string;
   name: string;
   quantity: number;

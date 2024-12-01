@@ -29,11 +29,26 @@ export default async function OrderTable({
               >
                 <div className="flex items-center justify-between border-b pb-4">
                   <div>
-                    <div className="mb-2 flex items-center dark:text-white">
-                      <p className='ml-2'>{b.name}</p>
+                    <div className="flex items-center dark:text-white">
+                      <p className='ml-2'>{new Date(b.order_date).toISOString().slice(0, 10)} {new Date(b.order_date).toISOString().slice(11, 16)}</p>
                     </div>
                   </div>
                   {b.payment_status? <Badge color="success">{i18n('available')}</Badge>:<Badge color="failure">{i18n('unavailable')}</Badge>}
+                </div>
+                <div className="flex items-center justify-between mt-4 pb-4">
+                  <div>
+                    <div className="flex items-center dark:text-white">
+                      <p className='ml-2 text-xl'>{b.name} -</p>
+                      <p className='ml-2 text-xl'>{b.contact}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mt-2 pb-4">
+                  <div>
+                    <div className="flex items-center dark:text-white">
+                      <p className='ml-2 text-xl'>${b.amount} ({b.payment_type=='cash'?i18n("cash"):i18n("credit")})</p>
+                    </div>
+                  </div>
                 </div>
                 <div className="flex w-full items-center justify-between pt-4 dark:text-white">
                   <div className="flex justify-end gap-2 dark:text-white">
@@ -48,9 +63,21 @@ export default async function OrderTable({
             <thead className="text-left text-sm font-normal">
               <tr>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6 dark:text-white">
+                  {i18n('order_date')}
+                </th>
+                <th scope="col" className="px-4 py-5 font-medium sm:pl-6 dark:text-white">
                   {i18n('name')}
                 </th>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6 dark:text-white">
+                  {i18n('contact')}
+                </th>
+                <th scope="col" className="px-4 py-5 font-medium sm:pl-6 dark:text-white">
+                  {i18n('payment_type')}
+                </th>
+                <th scope="col" className="px-4 py-5 font-medium sm:pl-6 dark:text-white">
+                  {i18n('total')}
+                </th>
+                <th scope="col" className="min-w-[300px] px-4 py-5 font-medium sm:pl-6 dark:text-white">
                   {i18n('status')}
                 </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
@@ -64,9 +91,29 @@ export default async function OrderTable({
                   key={b.documentId}
                   className="w-full py-3 text-sm last-of-type:border-none hover:bg-gray-200 dark:hover:bg-gray-700"
                 >
+                   <td className="w-1/5 whitespace-nowrap py-3 pl-6 pr-3 text-gray-900 dark:text-white">
+                    <div className="flex items-center gap-3">
+                      <p>{new Date(b.order_date).toISOString().slice(0, 10)} {new Date(b.order_date).toISOString().slice(11, 16)}</p>
+                    </div>
+                  </td>
                   <td className="w-1/5 whitespace-nowrap py-3 pl-6 pr-3 text-gray-900 dark:text-white">
                     <div className="flex items-center gap-3">
                       <p>{b.name}</p>
+                    </div>
+                  </td>
+                  <td className="w-1/5 whitespace-nowrap py-3 pl-6 pr-3 text-gray-900 dark:text-white">
+                    <div className="flex items-center gap-3">
+                      <p>{b.contact}</p>
+                    </div>
+                  </td>
+                  <td className="w-1/5 whitespace-nowrap py-3 pl-6 pr-3 text-gray-900 dark:text-white">
+                    <div className="flex items-center gap-3">
+                      <p>{b.payment_type=='cash'?i18n("cash"):i18n("credit")}</p>
+                    </div>
+                  </td>
+                  <td className="w-1/5 whitespace-nowrap py-3 pl-6 pr-3 text-gray-900 dark:text-white">
+                    <div className="flex items-center gap-3">
+                      <p>${b.amount}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3 text-gray-900 dark:text-white">

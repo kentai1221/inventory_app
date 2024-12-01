@@ -21,10 +21,10 @@ export default async function Page() {
                         </div>
                     </Breadcrumb.Item>
                     <Breadcrumb.Item ><Link href="/order">{i18n('order')}</Link></Breadcrumb.Item>
-                    <Breadcrumb.Item>{i18n('setting')}</Breadcrumb.Item>
+                    <Breadcrumb.Item>{i18n('create')}</Breadcrumb.Item>
                 </Breadcrumb>
                 <h1 className="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">
-                    {i18n('order')} {i18n('setting')}
+                    {i18n('create')}
                 </h1>
             </div>
 
