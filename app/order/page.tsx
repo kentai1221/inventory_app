@@ -28,13 +28,11 @@ export default async function Page(
   const queryStr = searchParams?.query || '';
   const pageNo = Number(searchParams?.page) || 1;
   const pageSize = Number(searchParams?.size) || 5;
-
   const [total] = await Promise.all([fetchOrderTotalPage(queryStr,pageSize)]);
 
   const i18n = await getTranslations('order');
 
   return (
-
     <>
       <div className="block items-center justify-between border-b border-gray-200 bg-white p-4 sm:flex dark:border-gray-700 dark:bg-gray-800">
         <div className="mb-1 w-full">
