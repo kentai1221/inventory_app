@@ -153,7 +153,7 @@ export async function fetchCategoryById(id:string) {
   }
 
   try {
-      const response = await fetch(`${process.env.BACKEND_URL}/api/products/${id}?populate=*`,
+      const response = await fetch(`${process.env.BACKEND_URL}/api/categories/${id}?populate=*`,
         {
           method: 'GET',
           headers: {
