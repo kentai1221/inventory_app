@@ -1,1 +1,1 @@
-## Next.js WEBAPP
+## COMP5322 Inventory System
