@@ -1,1 +1,1 @@
-## COMP5322 Inventory System
+## COMP5322 Inventory System - Frontend
